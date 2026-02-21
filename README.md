@@ -73,6 +73,8 @@ User Question (text or voice)
   Final Answer + Structured Citations + Uncertainty Flag
 ```
 
+![Agentic RAG Architecture](images/architecture_diagram.png)
+
 ### Why this architecture?
 
 The retriever → analyzer → refiner loop is the key design decision. A single retrieval pass is insufficient for complex questions that require evidence from multiple documents. The loop allows the system to identify what is missing and reformulate queries accordingly — up to 3 iterations before forcing a synthesis on whatever evidence exists.
