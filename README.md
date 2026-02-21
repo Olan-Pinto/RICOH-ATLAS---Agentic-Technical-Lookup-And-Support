@@ -1,8 +1,8 @@
-# 🚀 HackVerse 2026 | RICOH ATLAS
+# 🚀 HackVerse 2026 | RICOH ATLAS - Agentic Technical Lookup and Support
 
-**Company Track:** Ricoh
-**Team Name:** \[Your Team Name\]
-**Team Members:** \[Your Names\]
+**Company Track:** Ricoh <br>
+**Team Name:** Hackify <br>
+**Team Members:** Olan Pinto, Shivani Madan, Nikitha Lalam
 
 ---
 
@@ -127,12 +127,12 @@ A lightweight lookup table mapping named entities (step template names, job prop
 |---|---|---|
 | Document classification | `gpt-4o-mini` | Fast, cheap, structured output via Pydantic |
 | Query embedding | `text-embedding-3-small` | Good semantic quality at low cost; 1536-dim vectors |
-| Planner | `gpt-4o` / `claude-sonnet-4` | Question decomposition requires strong reasoning |
-| Analyzer | `gpt-4o` / `claude-sonnet-4` | Evidence sufficiency scoring requires nuanced judgment |
-| Query Refiner | `gpt-4o` / `claude-sonnet-4` | Subquery reformulation from missing info description |
-| Synthesizer | `gpt-4o` / `claude-sonnet-4` | Grounded answer generation from multiple chunks |
+| Planner | `gpt-4o`  | Question decomposition requires strong reasoning |
+| Analyzer | `gpt-4o`  | Evidence sufficiency scoring requires nuanced judgment |
+| Query Refiner | `gpt-4o`  | Subquery reformulation from missing info description |
+| Synthesizer | `gpt-4o`  | Grounded answer generation from multiple chunks |
 | Reranker | `gpt-4o-mini` | Per-chunk relevance scoring (0.0–1.0); cheap at top-k=5 |
-| Verifier | `gpt-4o` / `claude-sonnet-4` | Claim-level fact checking against source chunks |
+| Verifier | `gpt-4o`  | Claim-level fact checking against source chunks |
 | Voice transcription | `whisper-1` | Speech-to-text for voice query input |
 
 ### Retrieval Strategy
@@ -235,12 +235,11 @@ The system is deployable as a Streamlit web application accessible from any brow
 ### Prerequisites
 - Python 3.10+
 - OpenAI API key
-- PDFs downloaded from the Ricoh documentation Drive folder into `data/pdfs/`
+- PDFs downloaded from the Ricoh documentation Drive folder into `data/`
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-org/AgentSupport-Ricoh
-cd AgentSupport-Ricoh
+https://github.com/Olan-Pinto/RICOH-ATLAS---Agentic-Technical-Lookup-And-Support.git
 ```
 
 ### 2. Install dependencies
