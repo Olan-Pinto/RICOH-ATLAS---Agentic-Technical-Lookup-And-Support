@@ -1,7 +1,8 @@
 # nodes/planner.py
 from openai import OpenAI
 from pydantic import BaseModel
-from config import OPENAI_API_KEY, OPENAI_CHAT_MODEL
+from config import OPENAI_API_KEY
+from models import model_for
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
@@ -20,7 +21,7 @@ Generate 1-3 focused sub-questions to fully answer the main query."""
 
 def run_planner(state: dict) -> dict:
     response = client.beta.chat.completions.parse(
-        model=OPENAI_CHAT_MODEL,
+        model=model_for("planner"),
         messages=[
             {"role": "system", "content": PLANNER_PROMPT},
             {"role": "user",   "content": state["question"]},

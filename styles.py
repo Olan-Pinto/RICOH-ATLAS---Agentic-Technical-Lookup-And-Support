@@ -1,5 +1,5 @@
 # styles.py
-# All CSS for RICOH ATLAS — imported by app.py
+# All CSS for ABC Technology ATLAS — imported by app.py
 # Split into logical sections for maintainability
 
 # ── DESIGN TOKENS ─────────────────────────────────────────────────────────────
@@ -92,7 +92,7 @@ div[data-testid="stTextInput"] > div {
 
 # ── NAV BAR ───────────────────────────────────────────────────────────────────
 NAV = """
-.ricoh-nav {
+.abc-nav {
     background-color: var(--red);
     padding: 14px 40px;
     display: flex;
@@ -101,17 +101,17 @@ NAV = """
     width: 100%;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
-.ricoh-nav .logo {
+.abc-nav .logo {
     font-size: 18px;
     font-weight: 700;
     color: white;
     letter-spacing: 0.06em;
 }
-.ricoh-nav .logo span {
+.abc-nav .logo span {
     color: rgba(255,255,255,0.6);
     font-weight: 300;
 }
-.ricoh-nav .tagline {
+.abc-nav .tagline {
     font-size: 10px;
     color: rgba(255,255,255,0.65);
     letter-spacing: 0.18em;
@@ -359,7 +359,7 @@ div[data-testid="stAlert"] {
 
 # ── FOOTER ────────────────────────────────────────────────────────────────────
 FOOTER = """
-.ricoh-footer {
+.abc-footer {
     background: #111;
     color: rgba(255,255,255,0.35);
     text-align: center;

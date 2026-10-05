@@ -7,10 +7,11 @@ from pipeline import run_pipeline_streaming
 from index_loader import load_index
 from config import OPENAI_API_KEY
 from styles import inject_styles
+from observability import store
 
 # ── PAGE CONFIG ───────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="RICOH ATLAS",
+    page_title="ABC Technology ATLAS",
     page_icon="🖨️",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -32,7 +33,7 @@ st.markdown("""
     margin:0;
 ">
     <div style="font-size:18px;font-weight:700;color:white;letter-spacing:0.06em;">
-        RICOH <span style="color:rgba(255,255,255,0.6);font-weight:300;">Modern AI Solutions</span>
+        ABC Technology <span style="color:rgba(255,255,255,0.6);font-weight:300;">Modern AI Solutions</span>
     </div>
     <div style="font-size:10px;color:rgba(255,255,255,0.65);letter-spacing:0.18em;text-transform:uppercase;">
         Hackathon 2026 &middot; Agentic RAG
@@ -47,7 +48,7 @@ st.markdown("""
     margin:0;
 ">
     <h1 style="font-size:clamp(22px,3vw,38px);font-weight:700;color:white;margin:0 0 10px 0;letter-spacing:-0.02em;line-height:1.2;">
-        RICOH ATLAS &mdash;
+        ABC Technology ATLAS &mdash;
         <span style="color:#ff6b6b;font-weight:800;">A</span>gentic
         <span style="color:#ff6b6b;font-weight:800;">T</span>echnical
         <span style="color:#ff6b6b;font-weight:800;">L</span>ookup
@@ -59,6 +60,29 @@ st.markdown("""
     </p>
 </div>
 """, unsafe_allow_html=True)
+
+# ── FEEDBACK WIDGET (fragment: reruns alone, so the answer stays on screen) ───
+@st.fragment
+def feedback_widget(request_id: str):
+    done_key = f"fb_done_{request_id}"
+    if st.session_state.get(done_key):
+        st.caption("Thanks, your feedback was recorded.")
+        return
+    c1, c2, c3, _ = st.columns([1, 1, 1.6, 4])
+    comment = st.text_input("Anything we got wrong? (optional)", key=f"fb_c_{request_id}")
+    if c1.button("👍", key=f"up_{request_id}", help="Helpful"):
+        store.save_feedback(request_id, 1, comment=comment)
+        st.session_state[done_key] = True
+        st.rerun(scope="fragment")
+    if c2.button("👎", key=f"down_{request_id}", help="Not helpful"):
+        store.save_feedback(request_id, -1, comment=comment)
+        st.session_state[done_key] = True
+        st.rerun(scope="fragment")
+    if c3.button("Wrong citation", key=f"wc_{request_id}", help="A cited source does not support the claim"):
+        store.save_feedback(request_id, None, wrong_citation=True, comment=comment)
+        st.session_state[done_key] = True
+        st.rerun(scope="fragment")
+
 
 # ── LOAD INDEX ────────────────────────────────────────────────────────────────
 openai_client = OpenAI(api_key=OPENAI_API_KEY)
@@ -86,7 +110,7 @@ with main_col:
     with text_col:
         text_question = st.text_input(
             "q",
-            placeholder="Ask anything about Ricoh products, errors, or procedures...",
+            placeholder="Ask anything about ABC Technology products, errors, or procedures...",
             label_visibility="collapsed",
             key="question_input"
         )
@@ -188,7 +212,7 @@ with main_col:
         # ── NO RESULTS ────────────────────────────────────────────────────────
         if not result.get("retrieved_chunks"):
             st.error("No relevant information found in the documentation.")
-            st.info("💡 Try using specific property names, error codes, or Ricoh product names.")
+            st.info("💡 Try using specific property names, error codes, or ABC Technology product names.")
             st.stop()
 
         # ── UNCERTAINTY ───────────────────────────────────────────────────────
@@ -201,6 +225,13 @@ with main_col:
             f'<div class="answer-card">{result.get("final_answer", "No answer generated.")}</div>',
             unsafe_allow_html=True
         )
+
+        # ── FEEDBACK + RUN STATS ──────────────────────────────────────────────
+        if result.get("request_id"):
+            t = result.get("trace", {})
+            if t:
+                st.caption(f"⏱ {t['latency_s']:.1f}s · 🪙 {t['prompt_tokens'] + t['completion_tokens']:,} tokens · ${t['cost_usd']:.4f}")
+            feedback_widget(result["request_id"])
 
         # ── REASONING TRACE ───────────────────────────────────────────────────
         with st.expander("🧠 Agent Reasoning Trace", expanded=False):

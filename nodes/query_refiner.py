@@ -1,7 +1,8 @@
 # nodes/query_refiner.py
 from openai import OpenAI
 from pydantic import BaseModel
-from config import OPENAI_API_KEY, OPENAI_CHAT_MODEL
+from config import OPENAI_API_KEY
+from models import model_for
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
@@ -17,7 +18,7 @@ Do NOT repeat or rephrase already searched queries — explore a completely diff
 
 def run_query_refiner(state: dict) -> dict:
     response = client.beta.chat.completions.parse(
-        model=OPENAI_CHAT_MODEL,
+        model=model_for("refiner"),
         messages=[
             {"role": "system", "content": REFINER_PROMPT},
             {

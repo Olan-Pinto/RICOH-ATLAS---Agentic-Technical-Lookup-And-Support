@@ -1,2 +1,8 @@
-config.py
 __pycache__/
+.env
+*.db
+evals/results/*.json
+evals/dataset/candidates.jsonl
+evals/.judge_cache.jsonl
+evals/dataset/rejected.jsonl
+.DS_Store

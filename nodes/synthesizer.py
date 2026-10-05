@@ -1,7 +1,8 @@
 # nodes/synthesizer.py
 from openai import OpenAI
 from pydantic import BaseModel
-from config import OPENAI_API_KEY, OPENAI_CHAT_MODEL
+from config import OPENAI_API_KEY
+from models import model_for
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
@@ -25,7 +26,7 @@ def run_synthesizer(state: dict) -> dict:
         for c in state["retrieved_chunks"]
     )
     response = client.beta.chat.completions.parse(
-        model=OPENAI_CHAT_MODEL,
+        model=model_for("synthesizer"),
         messages=[
             {"role": "system", "content": SYNTHESIZER_PROMPT},
             {
